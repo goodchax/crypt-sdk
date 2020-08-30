@@ -3,7 +3,7 @@ package net.slans.sdk.internal.mapping;
 
 import java.util.List;
 
-import net.slans.sdk.ApiException;
+import net.slans.sdk.SlansApiException;
 
 /**
  * 格式转换器。
@@ -36,7 +36,7 @@ public interface Reader {
 	 * @param type 映射类型
 	 * @return 映射类型的实例
 	 */
-	public Object getObject(Object name, Class<?> type) throws ApiException;
+	public Object getObject(Object name, Class<?> type) throws SlansApiException;
 	
 	/**
 	 * 读取多个对象的值。
@@ -46,6 +46,6 @@ public interface Reader {
 	 * @param subType 嵌套映射类型
 	 * @return 嵌套映射类型实例列表
 	 */
-	public List<?> getListObjects(Object listName, Object itemName, Class<?> subType) throws ApiException;
+	public List<?> getListObjects(Object listName, Object itemName, Class<?> subType) throws SlansApiException;
 
 }

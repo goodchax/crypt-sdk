@@ -1,10 +1,10 @@
 package net.slans.sdk.internal.util;
 
 
-import net.slans.sdk.Constants;
-import net.slans.sdk.IovereyeResponse;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import net.slans.sdk.SlansConstants;
+import net.slans.sdk.SlansResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -14,16 +14,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-//import org.apache.commons.logging.impl.Jdk14Logger;
-
 /**
  * 客户端日志 通讯错误格式：time^_^api^_^app^_^ip^_^os^_^sdk^_^url^responseCode 业务错误格式：time^_^response
  */
 public class SlansLogger {
 
-    private static final Log clog = LogFactory.getLog("sdk.comm.err");
-    private static final Log blog = LogFactory.getLog("sdk.biz.err");
-    private static final Log ilog = LogFactory.getLog("sdk.biz.info");
+    private static final Logger clog = LoggerFactory.getLogger("sdk.comm.err");
+    private static final Logger blog = LoggerFactory.getLogger("sdk.biz.err");
+    private static final Logger ilog = LoggerFactory.getLogger("sdk.biz.info");
 
     private static String  osName           = System.getProperties().getProperty("os.name");
     private static String  ip               = null;
@@ -124,9 +122,9 @@ public class SlansLogger {
      */
     private static void _logCommError(Exception e, HttpURLConnection conn, String url,
                                       String appKey, String method, Map<String, String> params) {
-        DateFormat df = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
-        df.setTimeZone(TimeZone.getTimeZone(Constants.DATE_TIMEZONE));
-        String sdkName = Constants.SDK_VERSION;
+        DateFormat df = new SimpleDateFormat(SlansConstants.DATE_TIME_FORMAT);
+        df.setTimeZone(TimeZone.getTimeZone(SlansConstants.DATE_TIMEZONE));
+        String sdkName = SlansConstants.SDK_VERSION;
         String urlStr = null;
         String rspCode = "";
         if (conn != null) {
@@ -185,7 +183,7 @@ public class SlansLogger {
             return;
         }
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        df.setTimeZone(TimeZone.getTimeZone(Constants.DATE_TIMEZONE));
+        df.setTimeZone(TimeZone.getTimeZone(SlansConstants.DATE_TIMEZONE));
         StringBuilder sb = new StringBuilder();
         sb.append(df.format(new Date()));
         sb.append("^_^");
@@ -204,7 +202,7 @@ public class SlansLogger {
             return;
         }
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        df.setTimeZone(TimeZone.getTimeZone(Constants.DATE_TIMEZONE));
+        df.setTimeZone(TimeZone.getTimeZone(SlansConstants.DATE_TIMEZONE));
         StringBuilder sb = new StringBuilder();
         sb.append(df.format(new Date()));
         sb.append("^_^");
@@ -220,7 +218,7 @@ public class SlansLogger {
             return;
         }
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        df.setTimeZone(TimeZone.getTimeZone(Constants.DATE_TIMEZONE));
+        df.setTimeZone(TimeZone.getTimeZone(SlansConstants.DATE_TIMEZONE));
         StringBuilder sb = new StringBuilder();
         sb.append(df.format(new Date()));
         sb.append("^_^");
@@ -242,19 +240,19 @@ public class SlansLogger {
         if (!needEnableLogger) {
             return;
         }
-        blog.error(t);
+        blog.error(null, t);
     }
 
     /**
      * 发生特别错误时记录完整错误现场
      */
-    public static void logErrorScene(Map<String, Object> rt, IovereyeResponse tRsp,
+    public static void logErrorScene(Map<String, Object> rt, SlansResponse tRsp,
                                      String appSecret) {
         if (!needEnableLogger) {
             return;
         }
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        df.setTimeZone(TimeZone.getTimeZone(Constants.DATE_TIMEZONE));
+        df.setTimeZone(TimeZone.getTimeZone(SlansConstants.DATE_TIMEZONE));
         StringBuilder sb = new StringBuilder();
         sb.append("ErrorScene");
         sb.append("^_^");
@@ -269,13 +267,13 @@ public class SlansLogger {
         sb.append(df.format(new Date()));
         sb.append("^_^");
         sb.append("ProtocalMustParams:");
-        appendLog((IovereyeHashMap) rt.get("protocalMustParams"), sb);
+        appendLog((SlansHashMap) rt.get("protocalMustParams"), sb);
         sb.append("^_^");
         sb.append("ProtocalOptParams:");
-        appendLog((IovereyeHashMap) rt.get("protocalOptParams"), sb);
+        appendLog((SlansHashMap) rt.get("protocalOptParams"), sb);
         sb.append("^_^");
         sb.append("ApplicationParams:");
-        appendLog((IovereyeHashMap) rt.get("textParams"), sb);
+        appendLog((SlansHashMap) rt.get("textParams"), sb);
         sb.append("^_^");
         sb.append("Body:");
         sb.append((String) rt.get("rsp"));
@@ -285,13 +283,13 @@ public class SlansLogger {
     /**
      * 发生特别错误时记录完整错误现场
      */
-    public static void logErrorScene(Map<String, Object> rt, IovereyeResponse tRsp,
+    public static void logErrorScene(Map<String, Object> rt, SlansResponse tRsp,
                                      String appSecret, Map<String, Long> costTimeMap) {
         if (!needEnableLogger) {
             return;
         }
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        df.setTimeZone(TimeZone.getTimeZone(Constants.DATE_TIMEZONE));
+        df.setTimeZone(TimeZone.getTimeZone(SlansConstants.DATE_TIMEZONE));
         StringBuilder sb = new StringBuilder();
         sb.append("ErrorScene");
         sb.append("^_^");
@@ -306,13 +304,13 @@ public class SlansLogger {
         sb.append(df.format(new Date()));
         sb.append("^_^");
         sb.append("ProtocalMustParams:");
-        appendLog((IovereyeHashMap) rt.get("protocalMustParams"), sb);
+        appendLog((SlansHashMap) rt.get("protocalMustParams"), sb);
         sb.append("^_^");
         sb.append("ProtocalOptParams:");
-        appendLog((IovereyeHashMap) rt.get("protocalOptParams"), sb);
+        appendLog((SlansHashMap) rt.get("protocalOptParams"), sb);
         sb.append("^_^");
         sb.append("ApplicationParams:");
-        appendLog((IovereyeHashMap) rt.get("textParams"), sb);
+        appendLog((SlansHashMap) rt.get("textParams"), sb);
         sb.append("^_^");
         sb.append("Body:");
         sb.append((String) rt.get("rsp"));
@@ -329,7 +327,7 @@ public class SlansLogger {
     /**
      * 发生特别错误时记录完整错误现场
      */
-    public static void logBizSummary(Map<String, Object> rt, IovereyeResponse tRsp,
+    public static void logBizSummary(Map<String, Object> rt, SlansResponse tRsp,
                                      Map<String, Long> costTimeMap) {
         if (!needEnableLogger) {
             return;
@@ -342,13 +340,13 @@ public class SlansLogger {
         sb.append(tRsp.getSubCode());
         sb.append("^_^");
         sb.append("ProtocalMustParams:");
-        appendLog((IovereyeHashMap) rt.get("protocalMustParams"), sb);
+        appendLog((SlansHashMap) rt.get("protocalMustParams"), sb);
         sb.append("^_^");
         sb.append("ProtocalOptParams:");
-        appendLog((IovereyeHashMap) rt.get("protocalOptParams"), sb);
+        appendLog((SlansHashMap) rt.get("protocalOptParams"), sb);
         sb.append("^_^");
         sb.append("ApplicationParams:");
-        appendLog((IovereyeHashMap) rt.get("textParams"), sb);
+        appendLog((SlansHashMap) rt.get("textParams"), sb);
         sb.append("^_^");
         sb.append(costTimeMap.get("prepareCostTime"));
         sb.append("ms,");
@@ -359,7 +357,7 @@ public class SlansLogger {
         ilog.info(sb.toString());
     }
 
-    private static void appendLog(IovereyeHashMap map, StringBuilder sb) {
+    private static void appendLog(SlansHashMap map, StringBuilder sb) {
         boolean first = true;
         Set<Map.Entry<String, String>> set = map.entrySet();
         for (Map.Entry<String, String> entry : set) {

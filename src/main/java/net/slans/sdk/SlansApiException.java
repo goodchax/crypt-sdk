@@ -1,29 +1,29 @@
 package net.slans.sdk;
 
-public class ApiException extends Exception {
+public class SlansApiException extends Exception {
 	
 	private static final long serialVersionUID = -238091758285157331L;
 
 	private String errCode;
 	private String errMsg;
 
-	public ApiException() {
+	public SlansApiException() {
 		super();
 	}
 
-	public ApiException(String message, Throwable cause) {
+	public SlansApiException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public ApiException(String message) {
+	public SlansApiException(String message) {
 		super(message);
 	}
 
-	public ApiException(Throwable cause) {
+	public SlansApiException(Throwable cause) {
 		super(cause);
 	}
 
-	public ApiException(String errCode, String errMsg) {
+	public SlansApiException(String errCode, String errMsg) {
 		super(errCode + ":" + errMsg);
 		this.errCode = errCode;
 		this.errMsg = errMsg;

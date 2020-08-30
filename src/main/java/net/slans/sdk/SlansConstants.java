@@ -1,12 +1,30 @@
 package net.slans.sdk;
 
-public final class Constants {
+public final class SlansConstants {
 
 	public static final String SIGN_TYPE = "sign_type";
 
+	public static final String SIGN = "sign";
+
+	public static final String CORPID = "corpid";
+
+	public static final String BIZ_CONTENT_KEY = "biz_content";
+
 	public static final String SIGN_TYPE_RSA = "RSA";
 
+	/**
+	 * sha256WithRsa 算法请求类型
+	 */
+	public static final String SIGN_TYPE_RSA2 = "RSA2";
+
+	public static final String SIGN_TYPE_SM2 = "SM2";
+
 	public static final String ENCRYPT_TYPE_AES = "AES";
+
+	public static final String SIGN_ALGORITHMS = "SHA1WithRSA";
+
+	public static final String SIGN_SHA256RSA_ALGORITHMS = "SHA256WithRSA";
+
 
 	/**
 	 * 默认时间格式
@@ -18,6 +36,8 @@ public final class Constants {
 
 	/** UTF-8字符集 **/
 	public static final String CHARSET_UTF8 = "UTF-8";
+
+	public static final String CHARSET_GBK = "GBK";
 
 	/** TOP JSON 应格式 */
 	public static final String FORMAT_JSON = "json";
@@ -54,8 +74,8 @@ public final class Constants {
 //	public static final String WWW_AUTHORIZATION = "WWW-Authorization";
 
 //	/** HMAC签名方式 */
-//	public static final String SIGN_METHOD_HMAC = "hmac";
-//	public static final String SIGN_METHOD_MD5 = "md5";
+	public static final String SIGN_METHOD_HMAC = "hmac";
+	public static final String SIGN_METHOD_MD5 = "md5";
 
 //	public static final String SIGN_METHOD = "sign_method";
 

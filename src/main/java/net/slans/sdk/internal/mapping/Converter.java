@@ -1,7 +1,7 @@
 package net.slans.sdk.internal.mapping;
 
-import net.slans.sdk.ApiException;
-import net.slans.sdk.IovereyeResponse;
+import net.slans.sdk.SlansApiException;
+import net.slans.sdk.SlansResponse;
 
 
 /**
@@ -19,8 +19,8 @@ public interface Converter {
 	 * @param rsp 响应字符串
 	 * @param clazz 领域类型
 	 * @return 响应对象
-	 * @throws ApiException
+	 * @throws SlansApiException
 	 */
-	public <T extends IovereyeResponse> T toResponse(String rsp, Class<T> clazz) throws ApiException;
+	public <T extends SlansResponse> T toResponse(String rsp, Class<T> clazz) throws SlansApiException;
 
 }

@@ -112,7 +112,7 @@ public class SlansEncryptor {
 		byte[] networkBytesOrder = getNetworkBytesOrder(textBytes.length);
 		byte[] corpidBytes = corpid.getBytes(CHARSET);
 
-		// randomStr + networkBytesOrder + text + appid
+		// randomStr + networkBytesOrder + text + corpid
 		byteCollector.addBytes(randomStrBytes);
 		byteCollector.addBytes(networkBytesOrder);
 		byteCollector.addBytes(textBytes);

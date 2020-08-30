@@ -5,9 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import net.slans.sdk.ApiException;
-import net.slans.sdk.Constants;
-import net.slans.sdk.IovereyeResponse;
+import net.slans.sdk.SlansApiException;
+import net.slans.sdk.SlansConstants;
+import net.slans.sdk.SlansResponse;
 import net.slans.sdk.internal.mapping.Converter;
 import net.slans.sdk.internal.mapping.Converters;
 import net.slans.sdk.internal.mapping.Reader;
@@ -18,19 +18,21 @@ import net.slans.sdk.internal.util.json.JSONValidatingReader;
 public class JsonConverter implements Converter {
 
 	@Override
-	public <T extends IovereyeResponse> T toResponse(String rsp, Class<T> clazz)
-			throws ApiException {
+	public <T extends SlansResponse> T toResponse(String rsp, Class<T> clazz)
+			throws SlansApiException {
 		JSONReader reader = new JSONValidatingReader(new ExceptionErrorListener());
 		Object rootObj = reader.read(rsp);
 		if (rootObj instanceof Map<?, ?>) {
 			Map<?, ?> rootJson = (Map<?, ?>) rootObj;
-			Collection<?> values = rootJson.values();
-			for (Object rspObj : values) {
-				if (rspObj instanceof Map<?, ?>) {
-					Map<?, ?> rspJson = (Map<?, ?>) rspObj;
-					return fromJson(rspJson, clazz);
-				}
-			}
+			return fromJson(rootJson, clazz);
+
+//			Collection<?> values = rootJson.values();
+//			for (Object rspObj : values) {
+//				if (rspObj instanceof Map<?, ?>) {
+//					Map<?, ?> rspJson = (Map<?, ?>) rspObj;
+//					return fromJson(rspJson, clazz);
+//				}
+//			}
 		}
 		return null;
 	}
@@ -44,7 +46,7 @@ public class JsonConverter implements Converter {
 	 * @return 领域对象
 	 */
 	public <T> T fromJson(final Map<?, ?> json, Class<T> clazz)
-			throws ApiException {
+			throws SlansApiException {
 		return Converters.convert(clazz, new Reader() {
 
 			@Override
@@ -59,7 +61,7 @@ public class JsonConverter implements Converter {
 
 			@Override
 			public Object getObject(Object name, Class<?> type)
-					throws ApiException {
+					throws SlansApiException {
 				Object tmp = json.get(name);
 				if (tmp instanceof Map<?, ?>) {
 					Map<?, ?> map = (Map<?, ?>) tmp;
@@ -71,7 +73,7 @@ public class JsonConverter implements Converter {
 
 			@Override
 			public List<?> getListObjects(Object listName, Object itemName,
-					Class<?> subType) throws ApiException {
+					Class<?> subType) throws SlansApiException {
 				List<Object> listObjs = null;
 
 				Object listTmp = json.get(listName);
@@ -93,7 +95,7 @@ public class JsonConverter implements Converter {
 			}
 
 			private List<Object> getListObjectsInner(Class<?> subType, Object itemTmp)
-					throws ApiException {
+					throws SlansApiException {
 				List<Object> listObjs;
 				listObjs = new ArrayList<Object>();
 				List<?> tmpList = (List<?>) itemTmp;
@@ -108,11 +110,11 @@ public class JsonConverter implements Converter {
 					} else if (Boolean.class.isAssignableFrom(subType)) {
 						obj = subTmp;
 					} else if (Date.class.isAssignableFrom(subType)) {
-						DateFormat format = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
+						DateFormat format = new SimpleDateFormat(SlansConstants.DATE_TIME_FORMAT);
 						try {
 							obj = format.parse(String.valueOf(subTmp));
 						} catch (ParseException e) {
-							throw new ApiException(e);
+							throw new SlansApiException(e);
 						}
 					} else if (subTmp instanceof Map<?, ?>) {
 						Map<?, ?> subMap = (Map<?, ?>) subTmp;

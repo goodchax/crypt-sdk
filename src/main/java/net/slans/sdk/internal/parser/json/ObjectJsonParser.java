@@ -1,11 +1,11 @@
 package net.slans.sdk.internal.parser.json;
 
-import net.slans.sdk.ApiException;
-import net.slans.sdk.IovereyeParser;
-import net.slans.sdk.IovereyeResponse;
+import net.slans.sdk.SlansApiException;
+import net.slans.sdk.SlansParser;
+import net.slans.sdk.SlansResponse;
 import net.slans.sdk.internal.mapping.Converter;
 
-public class ObjectJsonParser<T extends IovereyeResponse> implements IovereyeParser<T> {
+public class ObjectJsonParser<T extends SlansResponse> implements SlansParser<T> {
 
 	private Class<T> clazz;
 	
@@ -14,9 +14,8 @@ public class ObjectJsonParser<T extends IovereyeResponse> implements IovereyePar
 	}
 
 	@Override
-	public T parse(String rsp) throws ApiException {
-		Converter converter;
-		converter = new JsonConverter();
+	public T parse(String rsp) throws SlansApiException {
+		Converter converter = new JsonConverter();
 		
 		return converter.toResponse(rsp, clazz);
 	}

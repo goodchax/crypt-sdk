@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import net.slans.sdk.Constants;
+import net.slans.sdk.SlansConstants;
 
 
 /**
@@ -16,15 +16,15 @@ import net.slans.sdk.Constants;
  * @author JieMo
  * @since 1.7, 05 15, 2014
  */
-public class IovereyeHashMap extends HashMap<String, String> {
+public class SlansHashMap extends HashMap<String, String> {
 
 	private static final long serialVersionUID = -1277791390393392630L;
 
-	public IovereyeHashMap() {
+	public SlansHashMap() {
 		super();
 	}
 
-	public IovereyeHashMap(Map<? extends String, ? extends String> m) {
+	public SlansHashMap(Map<? extends String, ? extends String> m) {
 		super(m);
 	}
 
@@ -46,8 +46,8 @@ public class IovereyeHashMap extends HashMap<String, String> {
 		} else if (value instanceof Boolean) {
 			strValue = ((Boolean) value).toString();
 		} else if (value instanceof Date) {
-			DateFormat format = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
-			format.setTimeZone(TimeZone.getTimeZone(Constants.DATE_TIMEZONE));
+			DateFormat format = new SimpleDateFormat(SlansConstants.DATE_TIME_FORMAT);
+			format.setTimeZone(TimeZone.getTimeZone(SlansConstants.DATE_TIMEZONE));
 			strValue = format.format((Date) value);
 		} else {
 			strValue = value.toString();

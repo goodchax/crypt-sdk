@@ -8,17 +8,102 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.slans.sdk.Constants;
 import net.slans.sdk.FileItem;
+import net.slans.sdk.SlansConstants;
+
+import javax.net.ssl.*;
 
 public class WebUtils {
 
-	private static final String DEFAULT_CHARSET = Constants.CHARSET_UTF8;
+	private static final String DEFAULT_CHARSET = SlansConstants.CHARSET_UTF8;
+
+	private static SSLContext ctx = null;
+
+	private static HostnameVerifier verifier = null;
+
+	private static SSLSocketFactory socketFactory = null;
+
+	private static int keepAliveTimeout = 0;
+
+	/**
+	 * 是否校验SSL服务端证书，默认为需要校验
+	 */
+	private static volatile boolean needCheckServerTrusted = true;
+
+	/**
+	 * 设置是否校验SSL服务端证书
+	 *
+	 * @param needCheckServerTrusted true：需要校验（默认，推荐）；
+	 *                               <p>
+	 *                               false：不需要校验（仅当部署环境不便于进行服务端证书校验，且已有其他方式确保通信安全时，可以关闭SSL服务端证书校验功能）
+	 */
+	public static void setNeedCheckServerTrusted(boolean needCheckServerTrusted) {
+		WebUtils.needCheckServerTrusted = needCheckServerTrusted;
+	}
+
+	/**
+	 * 设置KeepAlive连接超时时间，一次HTTP请求完成后，底层TCP连接将尝试尽量保持该超时时间后才关闭，以便其他HTTP请求复用TCP连接
+	 * <p>
+	 * KeepAlive连接超时时间设置为0，表示使用默认的KeepAlive连接缓存时长（目前为5s）
+	 * <p>
+	 * 连接并非一定能保持指定的KeepAlive超时时长，比如服务端断开了连接
+	 * <p>
+	 * 注：该方法目前只在JDK8上测试有效
+	 *
+	 * @param timeout KeepAlive超时时间，单位秒
+	 */
+	public static void setKeepAliveTimeout(int timeout) {
+		if (timeout < 0 || timeout > 60) {
+			throw new RuntimeException("keep-alive timeout value must be between 0 and 60.");
+		}
+		keepAliveTimeout = timeout;
+	}
+
+	private static class DefaultTrustManager implements X509TrustManager {
+		public X509Certificate[] getAcceptedIssuers() {
+			return null;
+		}
+
+		public void checkClientTrusted(X509Certificate[] chain,
+									   String authType) throws CertificateException {
+		}
+
+		public void checkServerTrusted(X509Certificate[] chain,
+									   String authType) throws CertificateException {
+		}
+	}
+
+	static {
+
+		try {
+			ctx = SSLContext.getInstance("TLS");
+			ctx.init(new KeyManager[0], new TrustManager[] {new DefaultTrustManager()},
+					new SecureRandom());
+
+			ctx.getClientSessionContext().setSessionTimeout(15);
+			ctx.getClientSessionContext().setSessionCacheSize(1000);
+
+			socketFactory = ctx.getSocketFactory();
+		} catch (Exception e) {
+
+		}
+
+		verifier = new HostnameVerifier() {
+			public boolean verify(String hostname, SSLSession session) {
+				//不允许URL的主机名和服务器的标识主机名不匹配的情况
+				return false;
+			}
+		};
+
+	}
 
 	/**
 	 * 执行HTTP POST请求。
@@ -86,7 +171,7 @@ public class WebUtils {
 		String rsp = null;
 		try {
 			try {
-				conn = getConnection(new URL(url), Constants.METHOD_POST, ctype, headerMap);
+				conn = getConnection(new URL(url), SlansConstants.METHOD_POST, ctype, headerMap);
 				conn.setConnectTimeout(connectTimeout);
 				conn.setReadTimeout(readTimeout);
 			} catch (IOException e) {
@@ -134,7 +219,7 @@ public class WebUtils {
 	 * 
 	 * @param url
 	 *            请求地址
-	 * @param textParams
+	 * @param params
 	 *            文本请求参数
 	 * @param fileParams
 	 *            文件请求参数
@@ -163,7 +248,7 @@ public class WebUtils {
 		try {
 			try {
 				String ctype = "multipart/form-data;charset=" + charset + ";boundary=" + boundary;
-				conn = getConnection(new URL(url), Constants.METHOD_POST, ctype, headerMap);
+				conn = getConnection(new URL(url), SlansConstants.METHOD_POST, ctype, headerMap);
 				conn.setConnectTimeout(connectTimeout);
 				conn.setReadTimeout(readTimeout);
 			} catch (IOException e) {
@@ -268,23 +353,19 @@ public class WebUtils {
 		String rsp = null;
 
 		try {
-			String ctype = "application/x-www-form-urlencoded;charset=" + charset;
+			String ctype = "application/json; charset=" + charset;
 			String query = buildQuery(params, charset);
 			try {
-				conn = getConnection(buildGetUrl(url, query), Constants.METHOD_GET, ctype, null);
+				conn = getConnection(buildGetUrl(url, query), SlansConstants.METHOD_GET, ctype, null);
 			} catch (IOException e) {
-				// Map<String, String> map = getParamsFromUrl(url);
-				// TaobaoLogger.logCommError(e, url, map.get("app_key"),
-				// map.get("method"), params);
+				SlansLogger.logCommError(e, conn, null, null, params);
 				throw e;
 			}
 
 			try {
 				rsp = getResponseAsString(conn);
 			} catch (IOException e) {
-				// Map<String, String> map = getParamsFromUrl(url);
-				// TaobaoLogger.logCommError(e, conn, map.get("app_key"),
-				// map.get("method"), params);
+				 SlansLogger.logCommError(e, conn, null, null, params);
 				throw e;
 			}
 
@@ -301,7 +382,8 @@ public class WebUtils {
 			throws IOException {
 		HttpURLConnection conn = null;
 		if ("https".equals(url.getProtocol())) {
-
+			HttpsURLConnection connHttps = null;
+			conn = connHttps;
 		} else {
 			conn = (HttpURLConnection) url.openConnection();
 		}

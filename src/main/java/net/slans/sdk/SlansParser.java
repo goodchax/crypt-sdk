@@ -6,7 +6,7 @@ package net.slans.sdk;
  * @author carver.gu
  * @since 1.0, Apr 11, 2010
  */
-public interface IovereyeParser<T extends IovereyeResponse> {
+public interface SlansParser<T extends SlansResponse> {
 
 	/**
 	 * 把响应字符串解释成相应的领域对象。
@@ -14,11 +14,11 @@ public interface IovereyeParser<T extends IovereyeResponse> {
 	 * @param rsp 响应字符串
 	 * @return 领域对象
 	 */
-	public T parse(String rsp) throws ApiException;
+	public T parse(String rsp) throws SlansApiException;
 
 	/**
 	 * 获取响应类类型。
 	 */
-	public Class<T> getResponseClass() throws ApiException;
+	public Class<T> getResponseClass() throws SlansApiException;
 
 }

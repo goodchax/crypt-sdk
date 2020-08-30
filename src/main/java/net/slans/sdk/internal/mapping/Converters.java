@@ -17,9 +17,9 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.slans.sdk.ApiException;
-import net.slans.sdk.Constants;
-import net.slans.sdk.IovereyeResponse;
+import net.slans.sdk.SlansApiException;
+import net.slans.sdk.SlansConstants;
+import net.slans.sdk.SlansResponse;
 import net.slans.sdk.internal.util.StringUtils;
 
 public class Converters {
@@ -48,9 +48,9 @@ public class Converters {
 	 * @param clazz 领域类型
 	 * @param reader 读取器
 	 * @return 领域对象
-	 * @throws ApiException
+	 * @throws SlansApiException
 	 */
-	public static <T> T convert(Class<T> clazz, Reader reader) throws ApiException {
+	public static <T> T convert(Class<T> clazz, Reader reader) throws SlansApiException {
 		T rsp = null;
 		
 		try {
@@ -68,8 +68,8 @@ public class Converters {
 				String listName = null;
 				
 				Field field = null;
-				if (baseFields.contains(itemName) && IovereyeResponse.class.isAssignableFrom(clazz)) {
-					field = getField(IovereyeResponse.class, pd);
+				if (baseFields.contains(itemName) && SlansResponse.class.isAssignableFrom(clazz)) {
+					field = getField(SlansResponse.class, pd);
 				} else {
 					field = getField(clazz, pd);
 				}
@@ -101,7 +101,7 @@ public class Converters {
 						method.invoke(rsp, value.toString());
 					} else {
 						if (isCheckJsonType && value != null) {
-							throw new ApiException(itemName + "is not a String");
+							throw new SlansApiException(itemName + "is not a String");
 						}
 						if (value != null) {
 							method.invoke(rsp, value.toString());
@@ -115,7 +115,7 @@ public class Converters {
 						method.invoke(rsp, (Long) value);
 					} else {
 						if (isCheckJsonType && value != null) {
-							throw new ApiException(itemName + " is not a Number(Long)");
+							throw new SlansApiException(itemName + " is not a Number(Long)");
 						}
 						if(StringUtils.isNumeric(value)) {
 							method.invoke(rsp, Long.valueOf(value.toString()));
@@ -127,7 +127,7 @@ public class Converters {
 						method.invoke(rsp, (Integer) value);
 					} else {
 						if (isCheckJsonType && value != null) {
-							throw new ApiException(itemName + " is not a Number(Integer)");
+							throw new SlansApiException(itemName + " is not a Number(Integer)");
 						}
 						if (StringUtils.isNumeric(value)) {
 							method.invoke(rsp, Integer.valueOf(value.toString()));
@@ -139,7 +139,7 @@ public class Converters {
 						method.invoke(rsp, (Boolean) value);
 					} else {
 						if (isCheckJsonType && value != null) {
-							throw new ApiException(itemName + " is not a Boolean");
+							throw new SlansApiException(itemName + " is not a Boolean");
 						}
 						if (value != null) {
 							method.invoke(rsp, Boolean.valueOf(value.toString()));
@@ -151,7 +151,7 @@ public class Converters {
 						method.invoke(rsp, (Double) value);
 					} else {
 						if (isCheckJsonType && value != null) {
-							throw new ApiException(itemName + " is not a Double");
+							throw new SlansApiException(itemName + " is not a Double");
 						}
 					}
 				} else if (Number.class.isAssignableFrom(typeClass)) {
@@ -160,12 +160,12 @@ public class Converters {
 						method.invoke(rsp, (Number) value);
 					} else {
 						if (isCheckJsonType && value != null) {
-							throw new ApiException(itemName + " is not a Number");
+							throw new SlansApiException(itemName + " is not a Number");
 						}
 					}
 				} else if (Date.class.isAssignableFrom(typeClass)) {
-					DateFormat format = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
-					format.setTimeZone(TimeZone.getTimeZone(Constants.DATE_TIMEZONE));
+					DateFormat format = new SimpleDateFormat(SlansConstants.DATE_TIME_FORMAT);
+					format.setTimeZone(TimeZone.getTimeZone(SlansConstants.DATE_TIMEZONE));
 					Object value = reader.getPrimitiveObject(itemName);
 					if (value instanceof String) {
 						method.invoke(rsp, format.parse(value.toString()));
@@ -193,7 +193,7 @@ public class Converters {
 				}				
 			}
 		} catch (Exception e) {
-			throw new ApiException(e);
+			throw new SlansApiException(e);
 		}
 		
 		return rsp;

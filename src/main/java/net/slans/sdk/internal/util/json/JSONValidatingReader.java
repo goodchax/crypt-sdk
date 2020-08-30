@@ -15,6 +15,10 @@ public class JSONValidatingReader extends JSONReader {
 		this(new JSONValidator(listener));
 	}
 
+	public JSONValidatingReader() {
+		this(new StdoutStreamErrorListener());
+	}
+
 	@Override
 	public Object read(String string) {
 		if (!validator.validate(string)) {

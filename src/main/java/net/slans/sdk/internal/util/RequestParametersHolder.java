@@ -1,62 +1,34 @@
 package net.slans.sdk.internal.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
 
 public class RequestParametersHolder {
 
-	private IovereyeHashMap protocalMustParams;
-	private IovereyeHashMap protocalOptParams;
-	private IovereyeHashMap textParams;
+	private SlansHashMap protocalMustParams;
+	private SlansHashMap protocalOptParams;
+	private SlansHashMap applicationParams;
 
-	public IovereyeHashMap getProtocalMustParams() {
+	public SlansHashMap getProtocalMustParams() {
 		return protocalMustParams;
 	}
 
-	public void setProtocalMustParams(IovereyeHashMap protocalMustParams) {
+	public void setProtocalMustParams(SlansHashMap protocalMustParams) {
 		this.protocalMustParams = protocalMustParams;
 	}
 
-	public IovereyeHashMap getProtocalOptParams() {
+	public SlansHashMap getProtocalOptParams() {
 		return protocalOptParams;
 	}
 
-	public void setProtocalOptParams(IovereyeHashMap protocalOptParams) {
+	public void setProtocalOptParams(SlansHashMap protocalOptParams) {
 		this.protocalOptParams = protocalOptParams;
 	}
 
-	public IovereyeHashMap getTextParams() {
-		return textParams;
+	public SlansHashMap getApplicationParams() {
+		return applicationParams;
 	}
 
-	public void setTextParams(IovereyeHashMap textParams) {
-		this.textParams = textParams;
-	}
-
-	public Map<String, String> getProtocalParams() {
-		Map<String, String> params = new HashMap<String, String>();
-		if (protocalMustParams != null && !protocalMustParams.isEmpty()) {
-			params.putAll(protocalMustParams);
-		}
-		if (protocalOptParams != null && !protocalOptParams.isEmpty()) {
-			params.putAll(protocalOptParams);
-		}
-		return params;
-	}
-	
-	public Map<String, String> getAllParams() {
-		Map<String, String> params = new HashMap<String, String>();
-		if (protocalMustParams != null && !protocalMustParams.isEmpty()) {
-			params.putAll(protocalMustParams);
-		}
-		if (protocalOptParams != null && !protocalOptParams.isEmpty()) {
-			params.putAll(protocalOptParams);
-		}
-		if (textParams != null && !textParams.isEmpty()) {
-			params.putAll(textParams);
-		}
-		return params;
+	public void setApplicationParams(SlansHashMap applicationParams) {
+		this.applicationParams = applicationParams;
 	}
 
 }

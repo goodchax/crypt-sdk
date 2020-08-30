@@ -1,15 +1,16 @@
 package net.slans.sdk.request;
 
-import net.slans.sdk.IovereyeRequest;
-import net.slans.sdk.internal.util.IovereyeHashMap;
+import net.slans.sdk.SlansRequest;
+import net.slans.sdk.SlansObject;
+import net.slans.sdk.internal.util.SlansHashMap;
 import net.slans.sdk.response.SSOTokenResponse;
 
 import java.util.Map;
 
-public class SSOTokenRequest implements IovereyeRequest<SSOTokenResponse> {
+public class SSOTokenRequest implements SlansRequest<SSOTokenResponse> {
 
     // add user-defined text parameters
-    private IovereyeHashMap udfParams;
+    private SlansHashMap udfParams;
     private String apiVersion = null;
     private boolean needEncrypt=false;
 
@@ -19,14 +20,14 @@ public class SSOTokenRequest implements IovereyeRequest<SSOTokenResponse> {
 
     @Override
     public String getApiMethod() {
-        return "oapi/sso/gettoken";
+        return "/oapi/sso/gettoken";
     }
 
     @Override
     public Map<String, String> getTextParams() {
-        IovereyeHashMap txtParams = new IovereyeHashMap();
-        txtParams.put("operator_id", this.corpid);
-        txtParams.put("operator_type", this.ssosecret);
+        SlansHashMap txtParams = new SlansHashMap();
+        txtParams.put("corpid", this.corpid);
+        txtParams.put("ssosecret", this.ssosecret);
         if(udfParams != null) {
             txtParams.putAll(this.udfParams);
         }
@@ -56,5 +57,31 @@ public class SSOTokenRequest implements IovereyeRequest<SSOTokenResponse> {
     @Override
     public void setNeedEncrypt(boolean needEncrypt) {
 
+    }
+
+    @Override
+    public SlansObject getBizModel() {
+        return null;
+    }
+
+    @Override
+    public void setBizModel(SlansObject bizModel) {
+
+    }
+
+    public String getCorpid() {
+        return corpid;
+    }
+
+    public void setCorpid(String corpid) {
+        this.corpid = corpid;
+    }
+
+    public String getSsosecret() {
+        return ssosecret;
+    }
+
+    public void setSsosecret(String ssosecret) {
+        this.ssosecret = ssosecret;
     }
 }

@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.slans.sdk.internal.util.IovereyeUtils;
+import net.slans.sdk.internal.util.SlansUtils;
 
 public class FileItem {
 	private String fileName;
@@ -71,7 +71,7 @@ public class FileItem {
 
 	public String getMimeType() throws IOException {
 		if (this.mimeType == null) {
-			this.mimeType = IovereyeUtils.getMimeType(getContent());
+			this.mimeType = SlansUtils.getMimeType(getContent());
 		}
 		return this.mimeType;
 	}

@@ -6,7 +6,7 @@ import java.util.Map;
 import net.slans.sdk.internal.mapping.ApiField;
 import org.apache.commons.lang3.BooleanUtils;
 
-public abstract class IovereyeResponse implements Serializable {
+public abstract class SlansResponse implements Serializable {
 
 	private static final long serialVersionUID = 7067148970531690343L;
 

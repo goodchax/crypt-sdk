@@ -8,7 +8,7 @@ import java.util.Map;
  * @author JieMo
  * @since 1.0, 05 14, 2014
  */
-public interface IovereyeRequest<T extends IovereyeResponse> {
+public interface SlansRequest<T extends SlansResponse> {
 	
 	/**
 	 * 获取TOP的API类型。	 * 
@@ -60,5 +60,15 @@ public interface IovereyeRequest<T extends IovereyeResponse> {
 	 * @param needEncrypt
 	 */
 	void setNeedEncrypt(boolean needEncrypt);
+
+
+	SlansObject getBizModel();
+
+	/**
+	 * 设置业务实体，如需使用此方法，请勿直接设置biz_content
+	 *
+	 * @param bizModel
+	 */
+	void setBizModel(SlansObject bizModel);
 	
 }
