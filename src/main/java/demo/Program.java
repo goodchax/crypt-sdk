@@ -1,8 +1,8 @@
 package demo;
 
 import com.alibaba.fastjson.JSON;
-import net.slans.qd.sdk.security.aes.CallBackContent;
-import net.slans.qd.sdk.security.aes.SlansEncryptor;
+import net.slans.qd.sdk.notify.CallBackContent;
+import net.slans.qd.sdk.notify.SlansEncryptor;
 
 public class Program {
 
