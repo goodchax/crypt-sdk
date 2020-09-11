@@ -101,7 +101,7 @@ public class SlansSignature {
         int index = 0;
         for (String key : keys) {
             String value = sortedParams.get(key);
-            if (StringUtils.isAnyBlank(key) && StringUtils.isAnyBlank(value)) {
+            if (!StringUtils.isAnyBlank(key) && !StringUtils.isAnyBlank(value)) {
                 content.append(index == 0 ? "" : "&").append(key).append("=").append(value);
                 index++;
             }
