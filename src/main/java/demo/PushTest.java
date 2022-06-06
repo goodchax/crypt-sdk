@@ -45,7 +45,7 @@ public class PushTest {
 	public static String doPost(String json, String nonce, String timestamp, String signature) {
 		try {
 			// url query param
-			HttpUrl.Builder urlBuilder = HttpUrl.parse("http://localhost:8280/crmapi/qdCallBack")
+			HttpUrl.Builder urlBuilder = HttpUrl.parse("http://teoa.vaiwan.com/crmapi/qdCallBack")
 					.newBuilder();
 			urlBuilder.addQueryParameter("signature", signature);
 			urlBuilder.addQueryParameter("timestamp", timestamp);

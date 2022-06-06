@@ -19,8 +19,6 @@ import java.security.spec.X509EncodedKeySpec;
  */
 public class RSAEncryptor extends BaseAsymmetricEncryptor {
 
-    private Base64 base64 = new Base64();
-
     /**
      * RSA最大加密明文大小(1024/8-11=117)
      */
@@ -107,7 +105,7 @@ public class RSAEncryptor extends BaseAsymmetricEncryptor {
             i++;
             offSet = i * maxEncrypt;
         }
-        byte[] encryptedData = base64.encode(out.toByteArray());
+        byte[] encryptedData = Base64.encodeBase64(out.toByteArray());
         out.close();
 
         return StringUtils.isEmpty(charset) ? new String(encryptedData)
@@ -131,7 +129,7 @@ public class RSAEncryptor extends BaseAsymmetricEncryptor {
 
         byte[] signed = signature.sign();
 
-        return new String(base64.encode(signed));
+        return new String(Base64.encodeBase64(signed));
     }
 
     @Override

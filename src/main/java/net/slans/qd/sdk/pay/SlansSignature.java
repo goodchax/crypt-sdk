@@ -54,7 +54,7 @@ public class SlansSignature {
     public static boolean verify(Map<String, String> params, String publicKey,
                                    String charset, String signType) throws SlansApiException {
         String sign = params.get("sign");
-        String content = getSignCheckContent(params);
+        String content = getSignCheckContent(params, charset);
 
         return AsymmetricManager.getByName(signType).verify(content, charset, publicKey, sign);
     }
@@ -109,7 +109,7 @@ public class SlansSignature {
         return content.toString();
     }
 
-    public static String getSignCheckContent(Map<String, String> params) {
+    public static String getSignCheckContent(Map<String, String> params, String charset) {
         if (params == null) {
             return null;
         }

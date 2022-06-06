@@ -13,7 +13,7 @@ public class Program {
 		String timestamp = "1409304348000";
 		String nonce = "123456";
 		String corpid = "slansb0058cd49ba84db386e5e5197809xxxx";
-		String replyMsg = "{\"EventType\":\"user_add_org\",\"TimeStamp\":43535463645,\"UserId\":[\"efefef\",\"111111\"],\"CorpId\":\"corpid\"}";
+		String replyMsg = "{\"EventType\":\"check_url\",\"TimeStamp\":43535463645,\"UserId\":[\"efefef\",\"111111\"],\"CorpId\":\"corpid\"}";
 
 		// 加密
 		SlansEncryptor pc = new SlansEncryptor(token, encodingAesKey, corpid);
