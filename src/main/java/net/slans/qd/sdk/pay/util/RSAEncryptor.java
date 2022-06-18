@@ -2,7 +2,7 @@ package net.slans.qd.sdk.pay.util;
 
 import net.slans.qd.sdk.pay.SlansConstants;
 import net.slans.qd.sdk.pay.StreamUtil;
-import org.apache.commons.codec.binary.Base64;
+import net.slans.qd.sdk.pay.codec.Base64;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Cipher;
